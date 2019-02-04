@@ -1,0 +1,39 @@
+.regimen-view {
+  .description {
+    margin: 20px 0;
+  }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+
+    .step {
+      margin: 0;
+      display: block;
+      float: left;
+      width: 100%;
+      padding: 20px;
+
+      &:nth-of-type(odd){
+        background: #f7f7f7;
+      }
+
+      &:nth-of-type(even){
+        background: #dcdcdc;
+      }
+
+      .title {
+
+      }
+
+      .description {
+
+      }
+
+      .product {
+
+      }
+
+    }
+  }
+}

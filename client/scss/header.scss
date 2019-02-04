@@ -1,0 +1,75 @@
+header {
+
+  .nav-bar {
+    //background: #f3f3f3;
+    ul.nav {
+      li {
+        &.active a{
+          background: none;
+          text-decoration: underline;
+        }
+      }
+    }
+
+  }
+
+  .main-header {
+    border-bottom: 1px solid #999;
+    height: 60px;
+
+    & > div {
+      height: 100%;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .logo {
+      letter-spacing: 4px;
+      background-image: url("/img/chair.png");
+      height: 55px;
+      width: 35px;
+      position: relative;
+    }
+  }
+
+  ul.nav {
+    text-align: right;
+    height: 100%;
+    li {
+      display: inline-block;
+      height: 100%;
+
+      &.active a {
+        background: none;
+        text-decoration: underline;
+      }
+
+      a {
+        color: #fff;
+        letter-spacing: 2px;
+
+        &.active, &:hover {
+          background: none;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    &.mini-nav {
+      display: inline-block;
+      li {
+        a {
+          font-size: 13px;
+          padding: 5px 10px;
+        }
+      }
+    }
+
+    &.main-nav {
+
+    }
+  }
+
+}

@@ -1,0 +1,32 @@
+.website {
+  &.home {
+    position: absolute;
+    top: 100px; /* Header Height */
+    bottom: 20px; /* Footer Height */
+    width: 100%;
+
+    background-image: url("/img/evrywork-background.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+
+    .page {
+      height: 100%;
+    }
+
+    h2, p {
+      text-align: center;
+    }
+  }
+
+}
+
+body {
+  background-color: #2A3A42 !important;
+  color: #eee !important;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #222 !important;
+}

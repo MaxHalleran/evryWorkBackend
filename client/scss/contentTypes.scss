@@ -1,0 +1,318 @@
+ul.image-gallery {
+  li {
+    list-style: none;
+
+    img {
+      max-width: 100%;
+    }
+  }
+}
+
+.status {
+  &.list {
+
+  }
+
+  .item, &.item {
+    img {
+      max-width: 100%;
+    }
+  }
+
+  &.edit, &.create {
+    img {
+      max-width: 100%;
+    }
+  }
+}
+
+.spacer {
+  width: 100%;
+  &.v50 {
+    height: 50px;
+  }
+
+  &.v20 {
+    height: 20px;
+  }
+}
+
+.v-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  > div {
+    //display: block;
+  }
+}
+
+.loading {
+  display: flex !important;
+  justify-content: center;
+
+  .loader-grid {
+    display: inline-block;
+    position: relative;
+    width: 640px;
+    height: 640px;
+
+    div {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #dedede;
+      animation: loader-grid 1.2s linear infinite;
+    }
+
+    div:nth-child(1) {
+      top: 30px;
+      left: 30px;
+      animation-delay: 0s;
+    }
+
+    div:nth-child(2) {
+      top: 30px;
+      left: 130px;
+      animation-delay: -0.4s;
+    }
+
+    div:nth-child(3) {
+      top: 30px;
+      left: 225px;
+      animation-delay: -0.8s;
+    }
+
+    div:nth-child(4) {
+      top: 130px;
+      left: 30px;
+      animation-delay: -0.4s;
+    }
+
+    div:nth-child(5) {
+      top: 130px;
+      left: 130px;
+      animation-delay: -0.8s;
+    }
+
+    div:nth-child(6) {
+      top: 130px;
+      left: 225px;
+      animation-delay: -1.2s;
+    }
+
+    div:nth-child(7) {
+      top: 225px;
+      left: 30px;
+      animation-delay: -0.8s;
+    }
+
+    div:nth-child(8) {
+      top: 225px;
+      left: 130px;
+      animation-delay: -1.2s;
+    }
+
+    div:nth-child(9) {
+      top: 225px;
+      left: 225px;
+      animation-delay: -1.6s;
+    }
+
+  }
+}
+
+@keyframes loader-grid {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pagination {
+
+
+  display: flex !important;
+  justify-content: center;
+
+  .page-spread {
+    list-style: none;
+    padding-left: 0;
+    display: inline-block;
+    li {
+      display: inline-block;
+      margin: 0 5px;
+
+      a {
+
+        color: #FFF;
+        font-size: 18px;
+        padding: 5px;
+
+        &:not(.arrow){
+          background: #333; //#f7f7f7;
+          border-radius: 3px;
+
+          &.active, &:hover {
+            background: #222222; // #f1f1f1;
+          }
+        }
+
+        &.active, &:hover {
+          text-decoration: none;
+        }
+
+      }
+    }
+  }
+}
+
+ul.link-list {
+  padding: 0;
+
+  li {
+    list-style: none;
+    margin: 5px auto;
+
+    a {
+      color: #888;
+      letter-spacing: 2px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &.active {
+        text-decoration: underline;
+      }
+    }
+
+  }
+}
+
+ul.tag-list {
+  list-style: none;
+  padding: 0;
+
+  li {
+    color: #999;
+    font-style: italic;
+  }
+}
+
+table {
+  thead {
+    td {
+      font-weight: bold;
+      border-bottom: 1px solid;
+    }
+  }
+}
+
+
+.routine {
+
+  &.view {
+    .steps {
+      padding-left: 0;
+
+      li {
+        list-style: none;
+
+        img {
+          max-height: 200px;
+          float: left;
+        }
+
+      }
+    }
+  }
+
+  &.list {
+    &.min {
+
+      padding-left: 0;
+
+      li {
+        list-style: none;
+      }
+    }
+  }
+
+  &.create, &.edit {
+
+    .repeat-steps {
+      padding-left: 20px;
+      li {
+        list-style: none;
+        border-bottom: 1px solid #eee;
+        padding: 20px 0;
+
+        &:last-of-type {
+          border-bottom: none;
+        }
+
+        > div {
+          padding-left: 20px;
+        }
+
+        .step-controls {
+          .glyphicon {
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+.status.list {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+  max-height: 1000px;
+  overflow: hidden;
+
+
+  .item {
+    border-bottom: 1px solid #999;
+
+    &:last-of-type {
+      border: none;
+    }
+  }
+}
+
+.status {
+  &.edit, &.create {
+    input[type="file"] {
+      display: none;
+    }
+
+    img {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.status.item {
+  padding: 10px;
+
+  .status-controls {
+    margin-top: 10px;
+
+    a {
+      margin-right: 5px;
+    }
+  }
+}
+
+
+.nav>li>a:focus, .nav>li>a:hover {
+  text-decoration: none;
+  background-color: #222;
+}

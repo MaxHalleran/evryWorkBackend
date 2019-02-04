@@ -1,0 +1,29 @@
+.btn {
+
+  &.btn-primary {
+    background: none;
+    color: #fff;
+    border-color: #fff;
+    transition: background .2s ease-in-out;
+
+    &:hover {
+      background: rgba(255,255,255, .5);
+      color: #ddd;
+      border-color: #888;
+    }
+  }
+
+  &.btn-secondary {
+    background: #f3f3f3;
+  }
+
+  &.btn-xlarge {
+    font-size: 22px;
+    padding: 10px 20px;
+  }
+
+  &.btn-small {
+    font-size: 14px;
+    padding: 2px 7px;
+  }
+}

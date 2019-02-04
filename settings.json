@@ -1,0 +1,24 @@
+{
+  "public": {
+    "persistent_session": {
+      "default_method": "persistent"
+    },
+    "apiKeys": {
+      "recaptcha": "6Ley0WkUAAAAABeQPZ0YD97rhqqQeN8MUx4dH4tc"
+    }
+  },
+  "apiKeys": {
+    "recaptcha": "6Ley0WkUAAAAAFPkmT1VXZAQVX66J5jLFYsJK8j6",
+    "s3": {
+      "key": "AKIAI3B73TBDEE524HAA",
+      "secret": "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",
+      "bucket": "epiiq",
+      "region": "us-east-2"
+    },
+    "amazonProducts": {
+      "associateTag": "epiiq-20",
+      "secret": "Dh3ezP26HNcDryN76WH8/mkHmgzBQ2rmd1asmBTs",
+      "accessKey": "AKIAILKFOWO3TQIMCCYQ"
+    }
+  }
+}
