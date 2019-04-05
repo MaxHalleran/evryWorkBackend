@@ -25,57 +25,75 @@ export const amazonQuery = (params, method = 'GET', url) => {
   let hash = createHmac(baseUrl, endpoint, params, secret, method);
   params.Signature = hash;
   let res;
-  if(method == 'GET'){
-    let queryString = Object.keys(params).sort().map(param => {
-      return `${param}=${encodeURIComponent(params[param])}`;
-    }).join('&');
+  if (method == 'GET') {
+    let queryString = Object.keys(params)
+      .sort()
+      .map(param => {
+        return `${param}=${encodeURIComponent(params[param])}`;
+      })
+      .join('&');
     url += `?${queryString}`;
 
-    res = HTTP.call(
-      method,
-      url,
-    );
+    res = HTTP.call(method, url);
   }
-  return JSON.parse(convert.xml2json(res.content, {compact: true, spaces: 4}));
+  return JSON.parse(
+    convert.xml2json(res.content, { compact: true, spaces: 4 })
+  );
 };
 
 export const createHmac = (baseUrl, endpoint, params, secret, method) => {
-  let queryString = Object.keys(params).sort().map(param => {
-    return `${param}=${encodeURIComponent(params[param])}`;
-  }).join('&');
+  let queryString = Object.keys(params)
+    .sort()
+    .map(param => {
+      return `${param}=${encodeURIComponent(params[param])}`;
+    })
+    .join('&');
   let unsigned = `${method}\n${baseUrl}\n${endpoint}\n${queryString}`;
-  return crypto.createHmac('sha256', secret).update(unsigned).digest('base64');
-}
+  return crypto
+    .createHmac('sha256', secret)
+    .update(unsigned)
+    .digest('base64');
+};
 
 export const parseCSV = data => {
   let rows = data.split('\n');
-  for(let r = 0; r<rows.length;r++){
-    rows[r] = rows[r].split(',').map(cell=>{
-      return cell.slice(1,-1);
+  for (let r = 0; r < rows.length; r++) {
+    rows[r] = rows[r].split(',').map(cell => {
+      return cell.slice(1, -1);
     });
   }
   return rows;
-}
+};
 
 export const ISODateString = d => {
-    function pad(n) {return n<10 ? '0'+n : n}
-    return d.getUTCFullYear()+'-'
-         + pad(d.getUTCMonth()+1)+'-'
-         + pad(d.getUTCDate())+'T'
-         + pad(d.getUTCHours())+':'
-         + pad(d.getUTCMinutes())+':'
-         + pad(d.getUTCSeconds())+'Z'
-}
+  function pad(n) {
+    return n < 10 ? '0' + n : n;
+  }
+  return (
+    d.getUTCFullYear() +
+    '-' +
+    pad(d.getUTCMonth() + 1) +
+    '-' +
+    pad(d.getUTCDate()) +
+    'T' +
+    pad(d.getUTCHours()) +
+    ':' +
+    pad(d.getUTCMinutes()) +
+    ':' +
+    pad(d.getUTCSeconds()) +
+    'Z'
+  );
+};
 
 export const orderKeys = obj => {
-
   var keys = Object.keys(obj).sort(function keyOrder(k1, k2) {
-      if (k1 < k2) return -1;
-      else if (k1 > k2) return +1;
-      else return 0;
+    if (k1 < k2) return -1;
+    else if (k1 > k2) return +1;
+    else return 0;
   });
 
-  var i, after = {};
+  var i,
+    after = {};
   for (i = 0; i < keys.length; i++) {
     after[keys[i]] = obj[keys[i]];
     delete obj[keys[i]];
@@ -85,7 +103,7 @@ export const orderKeys = obj => {
     obj[keys[i]] = after[keys[i]];
   }
   return obj;
-}
+};
 
 /*amazonQuery({'Operation': 'ItemLookup',
 'ResponseGroup': 'Images,ItemAttributes,Offers,Reviews',

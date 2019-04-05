@@ -1,15 +1,15 @@
-import {amazonQuery} from './functions.js';
+import { amazonQuery } from './functions.js';
 
 export const productsDataRef = () => {
   const productsDbText = Assets.getText('beautyProducts.tsv');
   let rows = productsDbText.split('\n');
   //console.log('product fields: ',rows[0].split('\t'));
   let headerCells = rows[0].split('\t');
-  for(let h = 0; h<headerCells.length; h++){
+  for (let h = 0; h < headerCells.length; h++) {
     //console.log(h, headerCells[h]);
   }
   let data = [];
-  for(let r = 1; r<rows.length; r++){
+  for (let r = 1; r < rows.length; r++) {
     let rowData = rows[r].split('\t');
     data.push({
       code: rowData[0],
@@ -76,10 +76,16 @@ export const productsDataRef = () => {
 
 export const linkProductData = (productData, productName) => {
   console.log('Finding data for ', productName);
-  for(let p = 0; p<productData.length; p++){
-    if((productData[p].product_name && productData[p].product_name != '' && productData[p].product_name.search(productName) != -1)
-    || (productData[p].generic_name && productData[p].generic_name != '' && productData[p].generic_name.search(productName) != -1)){
-    /*
+  for (let p = 0; p < productData.length; p++) {
+    if (
+      (productData[p].product_name &&
+        productData[p].product_name != '' &&
+        productData[p].product_name.search(productName) != -1) ||
+      (productData[p].generic_name &&
+        productData[p].generic_name != '' &&
+        productData[p].generic_name.search(productName) != -1)
+    ) {
+      /*
     if((productData[p].product_name != '' && (productData[p].product_name.search(productName) != -1 || productName.search(productData[p].product_name) != -1))
     || (productData[p].generic_name != '' && (productData[p].generic_name.search(productName) != -1 || productName.search(productData[p].generic_name) != -1))){
     */
@@ -87,11 +93,9 @@ export const linkProductData = (productData, productName) => {
     }
   }
   return false;
-}
+};
 
 export const findProducts = () => {
-
-
   getAmazonProducts({
     BrowseNode: '14717647011',
     SearchIndex: 'Beauty',
@@ -187,8 +191,6 @@ export const findProducts = () => {
     //MaximumPrice: '4000',
     //MinimumPrice: '200',
   });
-
-
 };
 
 export const getAmazonProducts = queryTerms => {
@@ -196,30 +198,54 @@ export const getAmazonProducts = queryTerms => {
   let addedProducts = [];
   let whileStop = 0;
   let requestTime = new Date();
-  while(currentPage <= 10 && whileStop <1000){
-    if(new Date().getTime() - requestTime.getTime() >= 60000){
+  while (currentPage <= 10 && whileStop < 1000) {
+    if (new Date().getTime() - requestTime.getTime() >= 60000) {
       console.log(`Sending Request for Page ${currentPage} to Amazon...`);
-      console.log('Progress: ', addedProducts.length, ' - ', addedProducts.length, '%');
+      console.log(
+        'Progress: ',
+        addedProducts.length,
+        ' - ',
+        addedProducts.length,
+        '%'
+      );
       requestTime = new Date();
       whileStop++;
       let products = amazonQuery({
         Operation: 'ItemSearch',
         ItemPage: currentPage,
-        ResponseGroup: 'Images,ItemAttributes,Reviews,EditorialReview,SalesRank,BrowseNodes',
-        ...queryTerms
+        ResponseGroup:
+          'Images,ItemAttributes,Reviews,EditorialReview,SalesRank,BrowseNodes',
+        ...queryTerms,
       });
 
       currentPage++;
       //console.log('Response: ', products.ItemSearchResponse);
-      if(products.ItemSearchResponse.Items.Request && products.ItemSearchResponse.Items.Request.TotalPages && products.ItemSearchResponse.Items.Request.TotalPages._text && products.ItemSearchResponse.Items.Request < currentPage){
+      if (
+        products.ItemSearchResponse.Items.Request &&
+        products.ItemSearchResponse.Items.Request.TotalPages &&
+        products.ItemSearchResponse.Items.Request.TotalPages._text &&
+        products.ItemSearchResponse.Items.Request < currentPage
+      ) {
         currentPage = 10;
       }
-      if(products.ItemSearchResponse.Items.Request && products.ItemSearchResponse.Items.Request.Errors){
+      if (
+        products.ItemSearchResponse.Items.Request &&
+        products.ItemSearchResponse.Items.Request.Errors
+      ) {
         //products.ItemSearchResponse.Items.Request.isValid._text
         //console.log('Response details', products.ItemSearchResponse.Items.Request.Errors.Error.Code, products.ItemSearchResponse.Items.Request.Errors.Error.Message);
       }
-      if(products && products.ItemSearchResponse && products.ItemSearchResponse.Items && products.ItemSearchResponse.Items.Item){
-        for(let p = 0; p<products.ItemSearchResponse.Items.Item.length; p++){
+      if (
+        products &&
+        products.ItemSearchResponse &&
+        products.ItemSearchResponse.Items &&
+        products.ItemSearchResponse.Items.Item
+      ) {
+        for (
+          let p = 0;
+          p < products.ItemSearchResponse.Items.Item.length;
+          p++
+        ) {
           let product = products.ItemSearchResponse.Items.Item[p];
           let newProduct = processAmazonProduct(product);
           addedProducts.push(newProduct);
@@ -230,27 +256,31 @@ export const getAmazonProducts = queryTerms => {
 };
 
 export const processAmazonProduct = product => {
-
-  if(!Products.findOne({asin: product.ASIN._text})){
-
-    let titleRexEx = new RegExp(`(${product.ItemAttributes.Manufacturer._text})|((,|-|;) +?[0-9]+(\.[0-9]+)? +?(((fl\.?)? ?oz\.?)|(ounces?\.?)|(pounds?\.?)|count?\.?|lbs?\.?|grams?\.?|mls?\.?|milliliters?\.?)?)`, 'ig');
+  if (!Products.findOne({ asin: product.ASIN._text })) {
+    let titleRexEx = new RegExp(
+      `(${
+        product.ItemAttributes.Manufacturer._text
+      })|((,|-|;) +?[0-9]+(\.[0-9]+)? +?(((fl\.?)? ?oz\.?)|(ounces?\.?)|(pounds?\.?)|count?\.?|lbs?\.?|grams?\.?|mls?\.?|milliliters?\.?)?)`,
+      'ig'
+    );
 
     let title = product.ItemAttributes.Title._text.replace(titleRexEx, '');
     console.log('Product Title:', title);
 
     let features = [];
-    if(product.ItemAttributes.Feature){
-      for(let f = 0; f<product.ItemAttributes.Feature.length; f++){
+    if (product.ItemAttributes.Feature) {
+      for (let f = 0; f < product.ItemAttributes.Feature.length; f++) {
         features.push(product.ItemAttributes.Feature[f]._text);
       }
     }
 
     let nodeIds = [];
-    if(product.BrowseNodes && product.BrowseNodes.BrowseNode.Ancestors){
-      nodeIds = processAmazonParentNodes(product.BrowseNodes.BrowseNode.Ancestors.BrowseNode).nodeIds.filter(function(item, pos, self) {
+    if (product.BrowseNodes && product.BrowseNodes.BrowseNode.Ancestors) {
+      nodeIds = processAmazonParentNodes(
+        product.BrowseNodes.BrowseNode.Ancestors.BrowseNode
+      ).nodeIds.filter(function(item, pos, self) {
         return self.indexOf(item) == pos;
       });
-
     }
 
     let newProduct = {
@@ -259,55 +289,58 @@ export const processAmazonProduct = product => {
       asin: product.ASIN._text,
       productGroup: product.ItemAttributes.ProductGroup._text,
       salesRank: product.SalesRank._text,
-      images: [{url: product.LargeImage.URL._text}],
+      images: [{ url: product.LargeImage.URL._text }],
       brand: product.ItemAttributes.Manufacturer._text,
       description: product.EditorialReviews.EditorialReview.Content._text,
       categories: nodeIds,
       features,
-    }
+    };
 
     Products.insert(newProduct);
     return newProduct;
-
   }
-}
+};
 
 export const processAmazonParentNodes = (nodeData, childId) => {
   // Check and create category if needed based on nodeData.BrowseNodeId._text, nodeData.Name._text, and childId
   let id = nodeData.BrowseNodeId._text;
-  const existingCategory = Categories.findOne({browseNode: nodeData.BrowseNodeId._text});
-  if(!existingCategory){
+  const existingCategory = Categories.findOne({
+    browseNode: nodeData.BrowseNodeId._text,
+  });
+  if (!existingCategory) {
     let newCategory = {
       browseNode: nodeData.BrowseNodeId._text,
       name: nodeData.Name._text,
       children: [],
     };
-    if(childId){
+    if (childId) {
       newCategory.children.push(childId);
     }
     id = Categories.insert(newCategory);
-  }else{
+  } else {
     id = existingCategory._id;
-    if(childId){
+    if (childId) {
       let children = existingCategory.children;
-      if(!children){
+      if (!children) {
         children = [];
       }
 
-      if(existingCategory.children.indexOf(childId) == -1){
+      if (existingCategory.children.indexOf(childId) == -1) {
         children.push(childId);
       }
-      Categories.update(existingCategory._id, {$set: {children}});
+      Categories.update(existingCategory._id, { $set: { children } });
     }
-
   }
   let nodeIds = [id];
-  if(nodeData.Ancestors){
-    nodeIds.push(...processAmazonParentNodes(nodeData.Ancestors.BrowseNode).nodeIds, id);
+  if (nodeData.Ancestors) {
+    nodeIds.push(
+      ...processAmazonParentNodes(nodeData.Ancestors.BrowseNode).nodeIds,
+      id
+    );
   }
 
   return {
-    nodeIds
+    nodeIds,
   };
 };
 
